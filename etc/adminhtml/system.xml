@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<!-- Built by Louis Innovations (www.louis-innovations.com) -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="sadad" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>SADAD Payment Gateway</label>
+                <comment><![CDATA[<strong>Built by <a href="https://www.louis-innovations.com" target="_blank">Louis Innovations</a></strong> &mdash; Qatar's national payment gateway integration for Magento 2.]]></comment>
+                <fieldset_css>complex</fieldset_css>
+
+                <!-- Enable / Disable -->
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <!-- Payment Title -->
+                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                    <comment>Title displayed to customers at checkout.</comment>
+                </field>
+
+                <!-- Merchant ID -->
+                <field id="merchant_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Merchant ID</label>
+                    <comment>Your SADAD 7-digit merchant ID.</comment>
+                    <validate>required-entry</validate>
+                </field>
+
+                <!-- Secret Key -->
+                <field id="secret_key" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Secret Key</label>
+                    <comment>Your SADAD secret key for signing requests.</comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <validate>required-entry</validate>
+                </field>
+
+                <!-- Website -->
+                <field id="website" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Website Identifier</label>
+                    <comment>Website identifier as registered with SADAD (e.g. WEBXXX).</comment>
+                    <validate>required-entry</validate>
+                </field>
+
+                <!-- Environment -->
+                <field id="environment" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Environment</label>
+                    <source_model>LouisInnovations\Sadad\Model\Config\Source\Environment</source_model>
+                    <comment>Use Test for development/staging. Switch to Live before going live.</comment>
+                </field>
+
+                <!-- Checkout Mode -->
+                <field id="checkout_mode" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Checkout Mode</label>
+                    <source_model>LouisInnovations\Sadad\Model\Config\Source\CheckoutMode</source_model>
+                    <comment><![CDATA[
+                        <strong>v1.1</strong> &mdash; Standard redirect checkout. Customer is redirected to the SADAD gateway page.<br/>
+                        <strong>v2.1</strong> &mdash; Enhanced redirect checkout. Supports multi-product orders with extended parameters.<br/>
+                        <strong>v2.2</strong> &mdash; Embedded/hosted checkout. Displays the payment form on a SADAD-hosted secure page.
+                    ]]></comment>
+                </field>
+
+                <!-- Language -->
+                <field id="language" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gateway Language</label>
+                    <source_model>LouisInnovations\Sadad\Model\Config\Source\Language</source_model>
+                    <comment>Language displayed on the SADAD payment page.</comment>
+                </field>
+
+                <!-- Order Prefix -->
+                <field id="order_prefix" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Order ID Prefix</label>
+                    <comment>Prefix added to Magento order IDs when sent to SADAD (e.g. MGT-).</comment>
+                </field>
+
+                <!-- New Order Status -->
+                <field id="new_order_status" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>New Order Status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status\NewStatus</source_model>
+                    <comment>Order status set when the customer is redirected to SADAD.</comment>
+                </field>
+
+                <!-- Logging -->
+                <field id="logging" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Logging</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Log SADAD requests and responses to var/log/sadad.log.</comment>
+                </field>
+
+                <!-- Debug -->
+                <field id="debug" translate="label" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Debug Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable verbose debug logging. Do NOT enable in production.</comment>
+                </field>
+
+                <!-- Allow Specific Countries -->
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment from Applicable Countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment from Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+
+                <!-- Sort Order -->
+                <field id="sort_order" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sort Order</label>
+                    <validate>validate-number</validate>
+                </field>
+
+                <!-- Webhook URL (display only) -->
+                <field id="webhook_url" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Webhook URL</label>
+                    <frontend_model>LouisInnovations\Sadad\Block\Adminhtml\System\Config\WebhookUrl</frontend_model>
+                    <comment>Configure this URL in your SADAD merchant portal to receive payment notifications.</comment>
+                </field>
+
+                <!-- Callback URL (display only) -->
+                <field id="callback_url" translate="label" sortOrder="170" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Callback URL</label>
+                    <frontend_model>LouisInnovations\Sadad\Block\Adminhtml\System\Config\CallbackUrl</frontend_model>
+                    <comment>SADAD will redirect customers to this URL after payment. Configured automatically.</comment>
+                </field>
+
+                <!-- Footer -->
+                <field id="built_by" translate="label" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label></label>
+                    <frontend_model>LouisInnovations\Sadad\Block\Adminhtml\System\Config\BuiltBy</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

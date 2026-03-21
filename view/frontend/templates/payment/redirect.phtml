@@ -1,0 +1,74 @@
+<?php
+// Built by Louis Innovations (www.louis-innovations.com)
+/** @var \LouisInnovations\Sadad\Block\Payment\Redirect $block */
+$redirectData = $block->getRedirectData();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $block->escapeHtml(__('Redirecting to SADAD...')) ?></title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f4f7fb;
+        }
+        .redirect-box {
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+            max-width: 420px;
+            width: 90%;
+        }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #e0e0e0;
+            border-top-color: #1a3c6e;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        h2 { color: #1a3c6e; margin: 0 0 10px; font-size: 20px; }
+        p  { color: #666; font-size: 14px; line-height: 1.6; margin: 0; }
+        .logo { margin-bottom: 20px; font-size: 28px; }
+    </style>
+</head>
+<body>
+    <div class="redirect-box">
+        <div class="logo">&#128274;</div>
+        <div class="spinner"></div>
+        <h2><?= $block->escapeHtml(__('Redirecting to SADAD')) ?></h2>
+        <p><?= $block->escapeHtml(__('Please wait. You are being redirected to the SADAD secure payment gateway.')) ?></p>
+        <p style="margin-top:8px; font-size:12px; color:#999;">
+            <?= $block->escapeHtml(__('Do not close or refresh this page.')) ?>
+        </p>
+    </div>
+
+<?php if ($redirectData): ?>
+    <?= /* @noEscape */ $redirectData['html'] ?>
+    <script>
+        // Auto-submit is handled by the SDK-generated form script.
+        // Fallback: submit after 1.5 s if the inline script did not fire.
+        setTimeout(function () {
+            var form = document.getElementById('sadad-checkout-form');
+            if (form) { form.submit(); }
+        }, 1500);
+    </script>
+<?php else: ?>
+    <script>
+        // No redirect data found - send back to cart
+        window.location.replace('<?= $block->escapeJs($block->getUrl('checkout/cart')) ?>');
+    </script>
+<?php endif; ?>
+</body>
+</html>

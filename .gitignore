@@ -1,0 +1,25 @@
+# Composer
+/vendor/
+composer.lock
+
+# Magento generated files (these live in the Magento root, not the module)
+*.cache
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# PHPUnit
+.phpunit.result.cache
+/coverage/
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log

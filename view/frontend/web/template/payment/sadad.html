@@ -1,0 +1,102 @@
+<!-- SADAD Payment Gateway - Magento 2 payment template -->
+<!-- Built by Louis Innovations (www.louis-innovations.com) -->
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label class="label" data-bind="attr: {'for': getCode()}">
+            <!-- ko if: getLogoUrl() -->
+            <img data-bind="attr: {src: getLogoUrl(), alt: getTitle()}"
+                 class="sadad-logo"
+                 style="height:28px; vertical-align:middle; margin-right:8px;"/>
+            <!-- /ko -->
+            <span data-bind="text: getTitle()"></span>
+            <!-- ko if: isTestMode() -->
+            <span class="sadad-test-badge"
+                  style="background:#ff9800;color:#fff;font-size:10px;padding:2px 6px;border-radius:3px;margin-left:8px;vertical-align:middle;">
+                TEST MODE
+            </span>
+            <!-- /ko -->
+        </label>
+    </div>
+
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <div class="sadad-payment-info" style="margin:15px 0; padding:15px; background:#f0f7ff; border:1px solid #b8d4f0; border-radius:4px;">
+            <div style="display:flex; align-items:flex-start; gap:12px;">
+                <div style="font-size:28px; line-height:1;">&#128274;</div>
+                <div>
+                    <p style="margin:0 0 6px 0; font-weight:600; color:#1a3c6e;">
+                        <!-- ko i18n: 'Secure Payment via SADAD' --><!-- /ko -->
+                    </p>
+                    <p style="margin:0; font-size:13px; color:#555; line-height:1.5;">
+                        <!-- ko i18n: "You will be redirected to SADAD's secure payment gateway to complete your purchase. Your payment details are protected with bank-level encryption." --><!-- /ko -->
+                    </p>
+                    <!-- ko if: getCheckoutMode() === 'v2.2' -->
+                    <p style="margin:6px 0 0 0; font-size:12px; color:#777;">
+                        <!-- ko i18n: 'Embedded secure checkout powered by SADAD.' --><!-- /ko -->
+                    </p>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Accepted payment badges -->
+        <div class="sadad-accepted-methods" style="margin-top:10px; font-size:12px; color:#888;">
+            <!-- ko i18n: 'Accepts: Visa, Mastercard, NAPS (Qatar local cards), and internet banking.' --><!-- /ko -->
+        </div>
+
+        <!-- Loading indicator -->
+        <!-- ko if: isLoading() -->
+        <div class="sadad-loading" style="text-align:center; padding:10px;">
+            <span class="spinner" style="display:inline-block; width:20px; height:20px; border:3px solid #ccc; border-top-color:#1a3c6e; border-radius:50%; animation:spin 0.8s linear infinite;"></span>
+            <span style="margin-left:8px; color:#555;">
+                <!-- ko i18n: 'Redirecting to SADAD...' --><!-- /ko -->
+            </span>
+        </div>
+        <!-- /ko -->
+
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout sadad-place-order-btn"
+                        type="submit"
+                        data-bind="
+                            click: placeOrder,
+                            attr: {title: $t('Place Order')},
+                            enable: (getCode() == isChecked()),
+                            css: {disabled: !isPlaceOrderActionAllowed()}
+                        "
+                        style="background:#1a3c6e; border-color:#1a3c6e;">
+                    <span data-bind="i18n: 'Pay with SADAD'"></span>
+                </button>
+            </div>
+        </div>
+
+        <style>
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+            .sadad-place-order-btn:hover {
+                background:#2a5298 !important;
+                border-color:#2a5298 !important;
+            }
+        </style>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<?php
+// Built by Louis Innovations (www.louis-innovations.com)
+/** @var \LouisInnovations\Sadad\Block\Info $block */
+?>
+<dl class="payment-method-title">
+    <dt class="title"><?= $block->escapeHtml($block->getMethod()->getTitle()) ?></dt>
+</dl>
+
+<?php if ($block->getTransactionNumber()): ?>
+<dl class="payment-method-info">
+    <dt class="label"><?= $block->escapeHtml(__('SADAD Transaction')) ?></dt>
+    <dd class="data"><?= $block->escapeHtml($block->getTransactionNumber()) ?></dd>
+
+    <?php if ($block->getInvoiceNumber()): ?>
+    <dt class="label"><?= $block->escapeHtml(__('Invoice Number')) ?></dt>
+    <dd class="data"><?= $block->escapeHtml($block->getInvoiceNumber()) ?></dd>
+    <?php endif; ?>
+
+    <?php if ($block->getResponseMessage()): ?>
+    <dt class="label"><?= $block->escapeHtml(__('Gateway Response')) ?></dt>
+    <dd class="data"><?= $block->escapeHtml($block->getResponseMessage()) ?></dd>
+    <?php endif; ?>
+
+    <?php if ($block->isTestMode()): ?>
+    <dt class="label"><?= $block->escapeHtml(__('Mode')) ?></dt>
+    <dd class="data" style="color:#e65100; font-weight:600;"><?= $block->escapeHtml(__('TEST / SANDBOX')) ?></dd>
+    <?php endif; ?>
+</dl>
+<?php endif; ?>

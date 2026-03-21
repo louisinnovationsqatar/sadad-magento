@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!-- Built by Louis Innovations (www.louis-innovations.com) -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Register the SADAD payment method facade -->
+    <virtualType name="SadadPaymentMethodFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+            <argument name="code" xsi:type="const">LouisInnovations\Sadad\Model\SadadPaymentMethod::CODE</argument>
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+            <argument name="infoBlockType" xsi:type="string">LouisInnovations\Sadad\Block\Info</argument>
+            <argument name="valueHandlerPool" xsi:type="object">SadadValueHandlerPool</argument>
+            <argument name="commandPool" xsi:type="object">SadadCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Value Handler Pool -->
+    <virtualType name="SadadValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="default" xsi:type="string">SadadConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SadadConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <argument name="configInterface" xsi:type="object">SadadGatewayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Gateway Config -->
+    <virtualType name="SadadGatewayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="const">LouisInnovations\Sadad\Model\SadadPaymentMethod::CODE</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Command Pool -->
+    <virtualType name="SadadCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="order" xsi:type="string">SadadOrderCommand</item>
+                <item name="refund" xsi:type="string">LouisInnovations\Sadad\Gateway\Command\RefundCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Order Command -->
+    <virtualType name="SadadOrderCommand" type="Magento\Payment\Gateway\Command\GatewayCommand">
+        <arguments>
+            <argument name="requestBuilder" xsi:type="object">SadadOrderRequestBuilder</argument>
+            <argument name="handler" xsi:type="object">SadadOrderResponseHandler</argument>
+            <argument name="transferFactory" xsi:type="object">SadadTransferFactory</argument>
+            <argument name="client" xsi:type="object">LouisInnovations\Sadad\Gateway\Http\SadadClient</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SadadOrderRequestBuilder" type="Magento\Payment\Gateway\Request\BuilderComposite">
+        <arguments>
+            <argument name="builders" xsi:type="array">
+                <item name="order" xsi:type="string">LouisInnovations\Sadad\Gateway\Request\OrderDataBuilder</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SadadOrderResponseHandler" type="Magento\Payment\Gateway\Response\HandlerChain">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="order" xsi:type="string">LouisInnovations\Sadad\Gateway\Response\OrderHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SadadTransferFactory" type="LouisInnovations\Sadad\Gateway\Http\TransferFactory">
+    </virtualType>
+
+    <!-- Payment method model injection -->
+    <type name="LouisInnovations\Sadad\Model\SadadPaymentMethod">
+        <arguments>
+            <argument name="config" xsi:type="object">SadadGatewayConfig</argument>
+        </arguments>
+    </type>
+
+    <!-- Config Provider injection -->
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="sadad_config_provider" xsi:type="object">LouisInnovations\Sadad\Model\SadadConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Logger -->
+    <virtualType name="SadadLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">sadad</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">LouisInnovations\Sadad\Model\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="LouisInnovations\Sadad\Model\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+
+    <type name="LouisInnovations\Sadad\Model\SadadPaymentMethod">
+        <arguments>
+            <argument name="logger" xsi:type="object">SadadLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="LouisInnovations\Sadad\Model\WebhookProcessor">
+        <arguments>
+            <argument name="logger" xsi:type="object">SadadLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="LouisInnovations\Sadad\Model\RefundProcessor">
+        <arguments>
+            <argument name="logger" xsi:type="object">SadadLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- REST API webhook implementation -->
+    <preference for="LouisInnovations\Sadad\Api\WebhookInterface"
+                type="LouisInnovations\Sadad\Api\WebhookProcessor"/>
+</config>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- Built by Louis Innovations (www.louis-innovations.com) -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Redirecting to SADAD Payment Gateway...</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="LouisInnovations\Sadad\Block\Payment\Redirect"
+                   name="sadad.redirect"
+                   template="LouisInnovations_Sadad::payment/redirect.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

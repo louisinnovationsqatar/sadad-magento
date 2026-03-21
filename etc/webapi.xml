@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- Built by Louis Innovations (www.louis-innovations.com) -->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <!-- REST API endpoint for SADAD webhook notifications -->
+    <route url="/V1/sadad/webhook" method="POST">
+        <service class="LouisInnovations\Sadad\Api\WebhookInterface" method="receive"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+</routes>

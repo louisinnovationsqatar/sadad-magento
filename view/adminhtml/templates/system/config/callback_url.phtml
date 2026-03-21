@@ -1,0 +1,37 @@
+<?php
+// Built by Louis Innovations (www.louis-innovations.com)
+/** @var \LouisInnovations\Sadad\Block\Adminhtml\System\Config\CallbackUrl $block */
+?>
+<?php
+$callbackUrl = $block->getBaseUrl() . 'sadad/payment/callback';
+?>
+<div class="sadad-url-field" style="position:relative;">
+    <input
+        type="text"
+        readonly="readonly"
+        id="sadad_callback_url_display"
+        class="input-text"
+        style="width:calc(100% - 110px); background:#f8f9fa; border:1px solid #c5c5c5; padding:6px 10px; font-family:monospace; font-size:12px;"
+        value="<?= $block->escapeHtmlAttr($callbackUrl) ?>"
+        onclick="this.select();"
+    />
+    <button
+        type="button"
+        onclick="
+            var el = document.getElementById('sadad_callback_url_display');
+            el.select();
+            document.execCommand('copy');
+            this.textContent = '<?= $block->escapeJs(__('Copied!')) ?>';
+            var btn = this;
+            setTimeout(function(){ btn.textContent = '<?= $block->escapeJs(__('Copy')) ?>'; }, 2000);
+        "
+        class="action-default"
+        style="margin-left:8px; padding:6px 12px; background:#1a3c6e; color:#fff; border:none; cursor:pointer; border-radius:3px; font-size:12px;">
+        <?= $block->escapeHtml(__('Copy')) ?>
+    </button>
+</div>
+<p class="note" style="margin-top:6px;">
+    <span style="color:#555;">
+        <?= $block->escapeHtml(__('SADAD will POST the payment result to this URL. This is configured automatically.')) ?>
+    </span>
+</p>
